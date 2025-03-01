@@ -7,26 +7,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LangOption } from "@/constants";
-import { useLanguage } from "@/hooks/useLanguage";
 import { Language } from "@/types/language";
-import { useCallback } from "react";
 
 type LanguageSwitcherProps = {
   languages: Language[];
+  currentLang: Language | undefined;
+  onLanguageChange: (lang: LangOption) => void;
 };
 
-const LanguageSwitcher = ({ languages }: LanguageSwitcherProps) => {
-  const { language, setLanguage } = useLanguage();
-
-  const handleLanguageChange = useCallback(
-    (lang: LangOption) => setLanguage(lang),
-    [setLanguage],
-  );
-
-  const currentLang: Language | undefined = languages.find(
-    (lang) => lang?.code === language,
-  );
-
+const LanguageSwitcher = ({
+  languages,
+  currentLang,
+  onLanguageChange,
+}: LanguageSwitcherProps) => {
   return (
     <div className="flex items-center space-x-2">
       {currentLang && (
@@ -45,7 +38,7 @@ const LanguageSwitcher = ({ languages }: LanguageSwitcherProps) => {
                 <DropdownMenuItem
                   key={lang.code}
                   className="flex items-center space-x-2"
-                  onClick={() => handleLanguageChange(lang.code as LangOption)}
+                  onClick={() => onLanguageChange(lang.code as LangOption)}
                 >
                   <FlagItem
                     flag={lang?.flag ?? ""}

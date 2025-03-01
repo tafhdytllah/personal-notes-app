@@ -5,6 +5,8 @@
   "page.archive": "Archives Note Page",
   "page.create": "Add Note Page",
   "page.*.detail": "Detail Note Page",
+  "page.loading": "Loading...",
+  "page.empty": "Empty note",
   "theme.dark": "Dark",
   "theme.light": "Light",
   "theme.system": "System"

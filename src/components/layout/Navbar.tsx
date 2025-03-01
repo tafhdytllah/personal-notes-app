@@ -1,54 +1,52 @@
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { Switch } from "@/components/ui/switch";
-import { LangOption, ThemeEnum } from "@/constants";
-import { ROUTES } from "@/constants/route";
+import NavItem from "@/components/NavItem";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
-import { useTheme } from "@/hooks/useTheme";
 import { fetchLanguages } from "@/lib/data";
-import getLanguage from "@/lib/language";
 import { Language } from "@/types/language";
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
 
 const Navbar = () => {
-  const { theme, setTheme } = useTheme();
-  const { language } = useLanguage();
   const [languages, setLanguages] = useState<Language[]>([]);
-  const isDarkMode = theme === ThemeEnum.Dark;
+  const { language, setLanguage } = useLanguage();
+
+  const currentLang: Language | undefined = languages.find(
+    (lang) => lang?.code === language,
+  );
+
+  const handleLanguageChange = useCallback(
+    (lang: LangOption) => setLanguage(lang),
+    [setLanguage],
+  );
 
   useEffect(() => {
     fetchLanguages().then((data) => setLanguages(data));
   }, []);
 
   return (
-    <nav className="flex justify-between items-center p-4 bg-background shadow-md">
-      <div className="flex space-x-4">
-        <Link to={ROUTES["notes"]} className="text-foreground hover:underline">
-          {getLanguage("navbar.home", language as LangOption)}
-        </Link>
-        <Link
-          to={ROUTES["notes-archives"]}
-          className="text-foreground hover:underline"
-        >
-          {getLanguage("navbar.archive", language as LangOption)}
-        </Link>
-      </div>
-      <div className="flex flex-row gap-4">
-        <div className="flex items-center space-x-2">
-          {isDarkMode ? (
-            <Moon className="h-5 w-5 text-gray-500" />
-          ) : (
-            <Sun className="h-5 w-5 text-yellow-500" />
-          )}
-          <Switch
-            checked={isDarkMode}
-            onCheckedChange={(checked) =>
-              setTheme(checked ? ThemeEnum.Dark : ThemeEnum.Light)
-            }
+    <nav className="bg-background shadow-md">
+      <div className="container mx-auto px-4 flex justify-between items-center  py-4">
+        <div className="flex gap-x-6">
+          <NavItem
+            route="notes"
+            title="navbar.home"
+            language={language as LangOption}
+          />
+          <NavItem
+            route="notes-archives"
+            title="navbar.archive"
+            language={language as LangOption}
           />
         </div>
-        <LanguageSwitcher languages={languages} />
+        <div className="flex items-center gap-x-6">
+          <ThemeSwitcher />
+          <LanguageSwitcher
+            languages={languages}
+            currentLang={currentLang}
+            onLanguageChange={handleLanguageChange}
+          />
+        </div>
       </div>
     </nav>
   );
