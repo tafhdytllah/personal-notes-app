@@ -1,0 +1,11 @@
+{
+  "navbar.home": "Beranda",
+  "navbar.archive": "Arsip",
+  "page.home": "Halaman Beranda",
+  "page.archive": "Halaman Archives Note",
+  "page.create": "Halaman Membuat Note",
+  "page.*.detail": "Halaman Detail Note",
+  "theme.dark": "Gelap",
+  "theme.light": "Terang",
+  "theme.system": "Sistem"
+}

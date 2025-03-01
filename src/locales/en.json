@@ -1,0 +1,11 @@
+{
+  "navbar.home": "Home",
+  "navbar.archive": "Archives",
+  "page.home": "Home Page",
+  "page.archive": "Archives Note Page",
+  "page.create": "Add Note Page",
+  "page.*.detail": "Detail Note Page",
+  "theme.dark": "Dark",
+  "theme.light": "Light",
+  "theme.system": "System"
+}
