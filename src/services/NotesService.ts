@@ -20,3 +20,13 @@ export const fetchNotes = async (): Promise<Note[]> => {
     return [];
   }
 }
+
+export const createNote = async (data: Note) => {
+  LocalData.addNote(data);
+  return await fetchNotes();
+}
+
+export const editNote = async (data: Note) => {
+  LocalData.editNote(data);
+  return fetchNotes();
+};

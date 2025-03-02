@@ -11,5 +11,11 @@
   "theme.dark": "Dark",
   "theme.light": "Light",
   "theme.system": "System",
-  "button.create": "Create Note"
+  "button.create": "Create Note",
+  "button.save": "Save",
+  "button.cancel": "Cancel",
+  "note.label.by-name.title": "Title",
+  "note.label.by-name.body": "Body",
+  "note.placeholder.by-name.title": "Input Title",
+  "note.placeholder.by-name.body": "Input Body"
 }

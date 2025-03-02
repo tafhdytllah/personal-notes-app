@@ -1,6 +1,6 @@
 export const ROUTES = {
   "notes": "/",
-  "notes-create": "/create",
-  "notes-detail": "/*/detail",
-  "notes-archives": "/archives",
+  "notes-create": "/notes/create",
+  "notes-detail": "/notes/*/detail",
+  "notes-archives": "/notes/archives",
 }

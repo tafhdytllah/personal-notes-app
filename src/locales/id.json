@@ -11,5 +11,11 @@
   "theme.dark": "Gelap",
   "theme.light": "Terang",
   "theme.system": "Sistem",
-  "button.create": "Membuat Catatan"
+  "button.create": "Membuat Catatan",
+  "button.save": "Simpan",
+  "button.cancel": "Batal",
+  "note.label.by-name.title": "Judul",
+  "note.label.by-name.body": "Body",
+  "note.placeholder.by-name.title": "Masukkan Title",
+  "note.placeholder.by-name.body": "Masukkan Body"
 }

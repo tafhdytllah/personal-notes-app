@@ -10,7 +10,7 @@ const App = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1 p-4">
+      <main className="flex-1">
         <Routes>
           <Route path={ROUTES["notes"]} element={<HomePage />} />
           <Route path={ROUTES["notes-create"]} element={<CreatePage />} />
