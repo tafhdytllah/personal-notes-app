@@ -59,6 +59,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
 
     try {
       const updatedNotes = await createNote(mappedData);
+      console.log("updatedNotes : ", updatedNotes);
       setNotes(updatedNotes);
       navigate(redirectUrl);
     } catch (error) {
@@ -113,12 +114,14 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    type="text"
                     disabled={!editable}
-                    placeholder={getLanguage(
-                      `note.placeholder.by-name.${field.name}`,
-                      language as LangOption,
-                    )}
+                    placeholder={
+                      initialData?.body ??
+                      getLanguage(
+                        `note.placeholder.by-name.${field.name}`,
+                        language as LangOption,
+                      )
+                    }
                     {...field}
                   />
                 </FormControl>
@@ -141,10 +144,13 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
                   <Input
                     type="text"
                     disabled={!editable}
-                    placeholder={getLanguage(
-                      `note.placeholder.by-name.${field.name}`,
-                      language as LangOption,
-                    )}
+                    placeholder={
+                      initialData?.body ??
+                      getLanguage(
+                        `note.placeholder.by-name.${field.name}`,
+                        language as LangOption,
+                      )
+                    }
                     {...field}
                   />
                 </FormControl>

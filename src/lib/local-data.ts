@@ -56,6 +56,7 @@ const getArchivedNotes = (): Note[] => notes.filter((note) => note.archived) ?? 
 const addNote = ({ title, body }: Note): void => {
   const generatedId = `notes-${+new Date()}`;
   const createdAt = new Date().toISOString() ?? "";
+  console.log("createdAT : ", createdAt);
 
   notes = [
     ...notes,

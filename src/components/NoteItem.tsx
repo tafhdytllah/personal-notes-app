@@ -16,9 +16,13 @@ const NoteItem = ({ note, onArchiveChange }: NotesItemProps) => {
   const [isBookmark, setIsBookmark] = useState<boolean>(note.archived);
   const navigate = useNavigate();
   const redirectUrl = ROUTES["notes-detail"].replace(":id", note.id);
-  const formattedDate = format(new Date(note.createdAt), "dd MMMM yyyy", {
-    locale: id,
-  });
+  const formattedDate = format(
+    new Date(note.createdAt),
+    "dd MMMM yyyy HH:mm:ss",
+    {
+      locale: id,
+    },
+  );
 
   const handleBookmark = () => {
     setIsBookmark(!isBookmark);
