@@ -23,9 +23,9 @@ const BookMarkItem = ({
       className="p-2 rounded-full hover:bg-gray-200 transition"
     >
       {isBookmark ? (
-        <FaBookmark className="h-5 w-5 text-foreground" />
+        <FaBookmark className="h-4 w-4 text-foreground" />
       ) : (
-        <FaRegBookmark className="h-5 w-5 text-foreground" />
+        <FaRegBookmark className="h-4 w-4 text-foreground" />
       )}
     </button>
   );

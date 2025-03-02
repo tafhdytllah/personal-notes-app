@@ -7,7 +7,7 @@ import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
-import { getNotes, unarchiveNote } from "@/services/NotesService";
+import { deleteNote, getNotes, unarchiveNote } from "@/services/NotesService";
 import { Note } from "@/types/note";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -33,6 +33,11 @@ const ArchivePage = () => {
 
     setArchiveNote(filteredNotes);
   }, [notes, keyword]);
+
+  const onDeleteChangeHandler = (id: string) => {
+    deleteNote(id);
+    setNotes(getNotes());
+  };
 
   const onArchiveChangeHandler = (id: string) => {
     unarchiveNote(id);
@@ -60,6 +65,7 @@ const ArchivePage = () => {
           initialData={archiveNote}
           language={language as LangOption}
           onArchiveChange={onArchiveChangeHandler}
+          onDeleteChange={onDeleteChangeHandler}
         />
       ) : (
         <Empty language={language as LangOption} />
