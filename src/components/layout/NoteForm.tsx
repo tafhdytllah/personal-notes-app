@@ -50,8 +50,11 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
 
   const saveAsNew = async (values: z.infer<typeof NoteFormValidator>) => {
     const mappedData: Note = {
+      id: "",
       title: values.title ?? "",
       body: values.body ?? "",
+      createdAt: "",
+      archived: false,
     };
 
     try {
@@ -68,9 +71,11 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
     if (!initialData?.id) return;
 
     const mappedData: Note = {
-      id: initialData.id,
+      id: initialData.id ?? "",
       title: values.title ?? "",
       body: values.body ?? "",
+      createdAt: "",
+      archived: false,
     };
 
     try {

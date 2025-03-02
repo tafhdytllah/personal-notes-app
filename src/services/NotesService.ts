@@ -21,6 +21,15 @@ export const fetchNotes = async (): Promise<Note[]> => {
   }
 }
 
+export const getNoteById = (id: string): Note | null => {
+  const note = LocalData.getNote(id);
+  if (!note) {
+    console.error(`Note with id ${id} not found`);
+    return null;
+  }
+  return note;
+}
+
 export const createNote = async (data: Note) => {
   LocalData.addNote(data);
   return await fetchNotes();
