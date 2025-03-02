@@ -1,7 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import { ThemeEnum } from "@/constants";
 import { useTheme } from "@/hooks/useTheme";
-import { Moon, Sun } from "lucide-react";
+import { FaRegMoon, FaSun } from "react-icons/fa";
 
 const ThemeSwitcher = () => {
   const { theme, setTheme } = useTheme();
@@ -10,9 +10,9 @@ const ThemeSwitcher = () => {
   return (
     <div className="flex items-center gap-x-2">
       {isDarkMode ? (
-        <Moon className="h-5 w-5 text-foreground" />
+        <FaRegMoon className="h-5 w-5 text-foreground" />
       ) : (
-        <Sun className="h-5 w-5 text-foreground" />
+        <FaSun className="h-5 w-5 text-foreground" />
       )}
       <Switch
         checked={isDarkMode}

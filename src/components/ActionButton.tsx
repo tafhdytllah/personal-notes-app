@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { LangOption } from "@/constants";
 import getLanguage from "@/lib/language";
-import { Plus } from "lucide-react";
+import { FaPlus } from "react-icons/fa";
 type ActionButtonProps = {
   isAction?: boolean;
   language: LangOption;
@@ -17,7 +17,7 @@ const ActionButton = ({
 }: ActionButtonProps) => {
   return (
     <Button onClick={onClick}>
-      {isAction && <Plus className="mr-1 h-4 w-4" />}
+      {isAction && <FaPlus className="mr-1 h-4 w-4" />}
       <p className="mr-2">{getLanguage(text, language as LangOption)}</p>
     </Button>
   );

@@ -6,16 +6,21 @@ import { Note } from "@/types/note";
 type NoteListProps = {
   initialData: Note[];
   language: LangOption;
+  onArchiveChange: (id: string) => void;
 };
 
-const NoteList = ({ initialData, language }: NoteListProps) => {
+const NoteList = ({
+  initialData,
+  language,
+  onArchiveChange,
+}: NoteListProps) => {
   return (
     <>
       {initialData.length > 0 ? (
         <div className="container mx-auto px-4 pt-4 pb-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {initialData.map((note) => (
-              <NoteItem key={note.id} note={note} />
+              <NoteItem key={note.id} note={note} onArchiveChange={onArchiveChange} />
             ))}
           </div>
         </div>

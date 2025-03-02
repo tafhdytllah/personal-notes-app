@@ -21,6 +21,8 @@ export const fetchNotes = async (): Promise<Note[]> => {
   }
 }
 
+export const getNotes = () => LocalData.getAllNotes();
+
 export const getNoteById = (id: string): Note | null => {
   const note = LocalData.getNote(id);
   if (!note) {
@@ -39,3 +41,9 @@ export const editNote = async (data: Note) => {
   LocalData.editNote(data);
   return fetchNotes();
 };
+
+export const archiveNote = (id: string) => LocalData.archiveNote(id);
+
+export const unarchiveNote = (id: string) => LocalData.unarchiveNote(id);
+
+export const deleteNote = (id: string) => LocalData.deleteNote(id);

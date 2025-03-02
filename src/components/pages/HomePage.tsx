@@ -7,13 +7,14 @@ import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
+import { archiveNote, getNotes } from "@/services/NotesService";
 import { Note } from "@/types/note";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
   const { language } = useLanguage();
-  const { notes, loading } = useNotes();
+  const { notes, setNotes, loading } = useNotes();
   const [activeNotes, setActiveNotes] = useState<Note[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string>(
@@ -33,6 +34,11 @@ const HomePage = () => {
     setActiveNotes(filteredNotes);
   }, [notes, keyword]);
 
+  const onArchiveChangeHandler = (id: string) => {
+    archiveNote(id);
+    setNotes(getNotes());
+  };
+
   const onKeywordChangeHandler = (keyword: string) => {
     setKeyword(keyword);
     setSearchParams({ keyword });
@@ -50,7 +56,11 @@ const HomePage = () => {
       {loading ? (
         <Loading language={language as LangOption} />
       ) : activeNotes.length > 0 ? (
-        <NoteList initialData={activeNotes} language={language as LangOption} />
+        <NoteList
+          initialData={activeNotes}
+          language={language as LangOption}
+          onArchiveChange={onArchiveChangeHandler}
+        />
       ) : (
         <Empty language={language as LangOption} />
       )}
