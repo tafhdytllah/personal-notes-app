@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { FormType, LangOption } from "@/constants";
 import { ROUTES } from "@/constants/route";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -143,8 +144,7 @@ const NoteForm = ({ type, initialData }: NoteFormProps) => {
                   )}
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    type="text"
+                  <Textarea
                     disabled={!editable}
                     placeholder={
                       initialData?.body ??
