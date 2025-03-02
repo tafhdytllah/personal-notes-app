@@ -32,7 +32,7 @@ const NoteList = ({
           </div>
         </div>
       ) : (
-        <Empty language={language} />
+        <Empty language={language} text="" />
       )}
     </>
   );

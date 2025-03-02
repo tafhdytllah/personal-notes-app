@@ -1,24 +1,25 @@
-import Navbar from "@/components/layout/Navbar";
+import MainLayout from "@/components/layout/MainLayout";
 import ArchivePage from "@/components/pages/ArchivePage";
 import CreatePage from "@/components/pages/CreatePage";
 import DetailPage from "@/components/pages/DetailPage";
 import HomePage from "@/components/pages/HomePage";
+import NotFoundPage from "@/components/pages/NotFoundPage";
 import { ROUTES } from "@/constants/route";
-import { Route, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 const App = () => {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
+    <Router>
+      <Routes>
+        <Route element={<MainLayout />}>
           <Route path={ROUTES["notes"]} element={<HomePage />} />
           <Route path={ROUTES["notes-create"]} element={<CreatePage />} />
           <Route path={ROUTES["notes-detail"]} element={<DetailPage />} />
           <Route path={ROUTES["notes-archives"]} element={<ArchivePage />} />
-        </Routes>
-      </main>
-    </div>
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
   );
 };
 

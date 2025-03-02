@@ -3,11 +3,12 @@ import getLanguage from "@/lib/language";
 
 type EmptyProps = {
   language: LangOption;
+  text: string;
 };
-const Empty = ({ language }: EmptyProps) => {
+const Empty = ({ text, language }: EmptyProps) => {
   return (
     <div className="flex justify-center items-start h-screen text-lg font-semibold size mt-8">
-      {getLanguage("page.empty", language as LangOption)}
+      {getLanguage(text, language as LangOption)}
     </div>
   );
 };

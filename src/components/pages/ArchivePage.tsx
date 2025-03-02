@@ -68,7 +68,7 @@ const ArchivePage = () => {
           onDeleteChange={onDeleteChangeHandler}
         />
       ) : (
-        <Empty language={language as LangOption} />
+        <Empty language={language as LangOption} text="page.empty.archive" />
       )}
     </div>
   );
