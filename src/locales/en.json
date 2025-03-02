@@ -5,6 +5,7 @@
   "page.archive": "Archives Note Page",
   "page.create": "Add Note Page",
   "page.*.detail": "Detail Note Page",
+  "page.*.edit": "Edit Note Page",
   "page.loading": "Loading...",
   "page.search": "Search note...",
   "page.empty": "Empty data",

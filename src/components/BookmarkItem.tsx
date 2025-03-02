@@ -20,7 +20,7 @@ const BookMarkItem = ({
         onArchive(noteId);
         onBookmark();
       }}
-      className="p-2 rounded-full hover:bg-gray-200 transition"
+      className="p-2 rounded-full hover:bg-gray-400 transition"
     >
       {isBookmark ? (
         <FaBookmark className="h-4 w-4 text-foreground" />

@@ -1,11 +1,12 @@
 import BookMarkItem from "@/components/BookmarkItem";
+import DeleteItem from "@/components/DeleteItem";
+import EditItem from "@/components/EditItem";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ROUTES } from "@/constants/route";
 import { Note } from "@/types/note";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { useState } from "react";
-import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 type NotesItemProps = {
@@ -30,6 +31,8 @@ const NoteItem = ({
     },
   );
 
+  const noteId = note.id ?? "";
+
   const handleBookmark = () => {
     setIsBookmark(!isBookmark);
   };
@@ -42,22 +45,15 @@ const NoteItem = ({
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle className="text-lg font-semibold">{note.title}</CardTitle>
-          <div className="flex gap-x-2">
+          <div className="flex">
             <BookMarkItem
               isBookmark={isBookmark}
               onArchive={onArchiveChange}
               onBookmark={handleBookmark}
-              noteId={note.id ?? ""}
+              noteId={noteId}
             />
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onDeleteChange(note.id ?? "");
-              }}
-              className="p-2 rounded-full hover:bg-gray-200 transition"
-            >
-              <FaTrash className="h-4 w-4 text-foreground" />
-            </button>
+            <EditItem id={noteId} />
+            <DeleteItem noteId={noteId} onDeleteChange={onDeleteChange} />
           </div>
         </div>
         <p className="text-sm text-gray-500">{formattedDate}</p>
