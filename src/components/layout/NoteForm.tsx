@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { FormType, LangOption } from "@/constants";
 import { ROUTES } from "@/constants/route";
+import { useLanguage } from "@/hooks/useLanguage";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
@@ -21,15 +22,16 @@ import {
   ValidatedNoteFormDetailData,
 } from "@/validator/noteValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 type NoteFormProps = {
   type: FormType;
   initialData: ValidatedNoteFormDetailData | null;
-  language: LangOption;
 };
-const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
+const NoteForm = ({ type, initialData }: NoteFormProps) => {
+  const { language: lang } = useLanguage();
   const { setNotes } = useNotes();
   const navigate = useNavigateTo();
 
@@ -48,7 +50,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
 
   const isDataChanged = form.formState.isDirty;
 
-  const saveAsNew = async (values: z.infer<typeof NoteFormValidator>) => {
+  const saveAsNew = (values: z.infer<typeof NoteFormValidator>) => {
     const mappedData: Note = {
       id: "",
       title: values.title ?? "",
@@ -58,7 +60,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
     };
 
     try {
-      const updatedNotes = await createNote(mappedData);
+      const updatedNotes = createNote(mappedData);
       console.log("updatedNotes : ", updatedNotes);
       setNotes(updatedNotes);
       navigate(redirectUrl);
@@ -68,7 +70,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
     }
   };
 
-  const saveAsEdit = async (values: z.infer<typeof NoteFormValidator>) => {
+  const saveAsEdit = (values: z.infer<typeof NoteFormValidator>) => {
     if (!initialData?.id) return;
 
     const mappedData: Note = {
@@ -80,7 +82,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
     };
 
     try {
-      const updatedNotes = await editNote(mappedData);
+      const updatedNotes = editNote(mappedData);
       setNotes(updatedNotes);
       navigate(redirectUrl);
     } catch (error) {
@@ -109,7 +111,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
                 <FormLabel>
                   {getLanguage(
                     `note.label.by-name.${field.name}`,
-                    language as LangOption,
+                    lang as LangOption,
                   )}
                 </FormLabel>
                 <FormControl>
@@ -119,7 +121,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
                       initialData?.body ??
                       getLanguage(
                         `note.placeholder.by-name.${field.name}`,
-                        language as LangOption,
+                        lang as LangOption,
                       )
                     }
                     {...field}
@@ -137,7 +139,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
                 <FormLabel>
                   {getLanguage(
                     `note.label.by-name.${field.name}`,
-                    language as LangOption,
+                    lang as LangOption,
                   )}
                 </FormLabel>
                 <FormControl>
@@ -148,7 +150,7 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
                       initialData?.body ??
                       getLanguage(
                         `note.placeholder.by-name.${field.name}`,
-                        language as LangOption,
+                        lang as LangOption,
                       )
                     }
                     {...field}
@@ -166,14 +168,14 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
                 variant={"outline"}
                 onClick={() => navigate(redirectUrl)}
               >
-                {getLanguage("button.cancel", language as LangOption)}
+                {getLanguage("button.cancel", lang as LangOption)}
               </Button>
               <Button
                 className="w-full"
                 type="submit"
                 disabled={!isDataChanged}
               >
-                {getLanguage("button.save", language as LangOption)}
+                {getLanguage("button.save", lang as LangOption)}
               </Button>
             </div>
           )}
@@ -182,4 +184,14 @@ const NoteForm = ({ type, initialData, language }: NoteFormProps) => {
     </Form>
   );
 };
+
+NoteForm.propTypes = {
+  type: PropTypes.oneOf(["NEW", "EDIT", "VIEW"]).isRequired,
+  initialData: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    body: PropTypes.string,
+  }),
+};
+
 export default NoteForm;

@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Flag from "react-world-flags";
 
 type FlagItemProps = {
@@ -12,5 +13,10 @@ const FlagItem = ({ flag, content }: FlagItemProps) => {
       <span>{content}</span>
     </>
   );
+};
+
+FlagItem.propTypes = {
+  flag: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
 };
 export default FlagItem;

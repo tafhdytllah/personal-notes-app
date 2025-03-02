@@ -1,4 +1,5 @@
 import { ROUTES } from "@/constants/route";
+import PropTypes from "prop-types";
 import { FaPencilAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -22,6 +23,10 @@ const EditItem = ({ id }: EditItemProps) => {
       </button>
     </>
   );
+};
+
+EditItem.propTypes = {
+  id: PropTypes.string.isRequired,
 };
 
 export default EditItem;

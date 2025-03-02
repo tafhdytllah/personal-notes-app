@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { FaTrash } from "react-icons/fa";
 
 type NotesItemProps = {
@@ -18,6 +19,11 @@ const DeleteItem = ({ noteId, onDeleteChange }: NotesItemProps) => {
       </button>
     </>
   );
+};
+
+DeleteItem.propTypes = {
+  noteId: PropTypes.string.isRequired,
+  onDeleteChange: PropTypes.func.isRequired,
 };
 
 export default DeleteItem;

@@ -28,16 +28,8 @@ const Navbar = () => {
     <nav className="bg-background shadow-md">
       <div className="container max-w-[80%] mx-auto flex justify-between items-center py-4">
         <div className="flex gap-x-6">
-          <NavItem
-            route="notes"
-            title="navbar.home"
-            language={language as LangOption}
-          />
-          <NavItem
-            route="notes-archives"
-            title="navbar.archive"
-            language={language as LangOption}
-          />
+          <NavItem route="notes" title="navbar.home" />
+          <NavItem route="notes-archives" title="navbar.archive" />
         </div>
         <div className="flex items-center gap-x-6">
           <ThemeSwitcher />

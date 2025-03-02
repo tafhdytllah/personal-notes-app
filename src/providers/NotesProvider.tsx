@@ -1,9 +1,10 @@
 import { NotesContext } from "@/context/NotesContext";
-import { fetchNotes } from "@/services/NotesService";
+import { getAllNotes } from "@/services/NotesService";
 import { Note } from "@/types/note";
+import PropTypes from "prop-types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
+const NotesProvider = ({ children }: { children: React.ReactNode }) => {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -11,7 +12,7 @@ export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
     const getNotes = async () => {
       setLoading(true);
       try {
-        const data = await fetchNotes();
+        const data = getAllNotes();
         setNotes(data);
       } catch (error) {
         throw new Error(`Failed to fetch notes : ${error}`);
@@ -34,3 +35,9 @@ export const NotesProvider = ({ children }: { children: React.ReactNode }) => {
     <NotesContext.Provider value={value}>{children}</NotesContext.Provider>
   );
 };
+
+NotesProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default NotesProvider;

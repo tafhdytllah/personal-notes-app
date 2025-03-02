@@ -6,6 +6,7 @@ import { ROUTES } from "@/constants/route";
 import { Note } from "@/types/note";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -63,6 +64,18 @@ const NoteItem = ({
       </CardContent>
     </Card>
   );
+};
+
+NoteItem.propTypes = {
+  note: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    body: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    archived: PropTypes.bool.isRequired,
+  }).isRequired,
+  onArchiveChange: PropTypes.func.isRequired,
+  onDeleteChange: PropTypes.func.isRequired,
 };
 
 export default NoteItem;

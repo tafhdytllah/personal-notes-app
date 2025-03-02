@@ -3,6 +3,7 @@ import {
   LanguageContext,
   LanguageProviderState,
 } from "@/context/LanguageContext";
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
 type LanguageProviderProps = {
@@ -11,7 +12,7 @@ type LanguageProviderProps = {
   storageKey?: string;
 };
 
-export const LanguageProvider = ({
+const LanguageProvider = ({
   children,
   defaultLang = LangEnum.Id,
   storageKey = LANGUAGE_KEY,
@@ -42,3 +43,11 @@ export const LanguageProvider = ({
     </LanguageContext.Provider>
   );
 };
+
+LanguageProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+  defaultLang: PropTypes.oneOf(Object.values(LangEnum)),
+  storageKey: PropTypes.string,
+};
+
+export default LanguageProvider;

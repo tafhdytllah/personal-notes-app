@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LangOption } from "@/constants";
 import { Language } from "@/types/language";
+import PropTypes from "prop-types";
 
 type LanguageSwitcherProps = {
   languages: Language[];
@@ -54,6 +55,22 @@ const LanguageSwitcher = ({
       )}
     </div>
   );
+};
+
+LanguageSwitcher.propTypes = {
+  languages: PropTypes.arrayOf(
+    PropTypes.shape({
+      code: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      flag: PropTypes.string,
+    }),
+  ).isRequired,
+  currentLang: PropTypes.shape({
+    code: PropTypes.string.isRequired,
+    label: PropTypes.string,
+    flag: PropTypes.string,
+  }),
+  onLanguageChange: PropTypes.func.isRequired,
 };
 
 export default LanguageSwitcher;

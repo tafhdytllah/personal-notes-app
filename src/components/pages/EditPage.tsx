@@ -7,19 +7,15 @@ import { getNoteById } from "@/services/NotesService";
 import { useParams } from "react-router-dom";
 
 const EditPage = () => {
-  const { language } = useLanguage();
+  const { language: lang } = useLanguage();
   const { id } = useParams();
 
   const note = getNoteById(id as string);
 
   return (
     <div className="max-w-[80%] mx-auto grid grid-rows-[auto,1fr] gap-4 py-4">
-      <TitlePage title={getLanguage("page.*.edit", language as LangOption)} />
-      <NoteForm
-        type="EDIT"
-        initialData={note}
-        language={language as LangOption}
-      />
+      <TitlePage title={getLanguage("page.*.edit", lang as LangOption)} />
+      <NoteForm type="EDIT" initialData={note} />
     </div>
   );
 };

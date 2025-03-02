@@ -1,13 +1,12 @@
 import { LangOption } from "@/constants";
+import { useLanguage } from "@/hooks/useLanguage";
 import getLanguage from "@/lib/language";
 
-type LoadingProps = {
-  language: LangOption;
-};
-const Loading = ({ language }: LoadingProps) => {
+const Loading = () => {
+  const { language: lang } = useLanguage();
   return (
     <div className="flex justify-center items-start h-screen text-lg font-semibold size mt-8">
-      {getLanguage("page.loading", language as LangOption)}
+      {getLanguage("page.loading", lang as LangOption)}
     </div>
   );
 };

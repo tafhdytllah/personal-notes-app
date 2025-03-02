@@ -7,13 +7,18 @@ import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
-import { archiveNote, deleteNote, getNotes } from "@/services/NotesService";
+import {
+  archiveNote,
+  deleteNote,
+  getActiveNotes,
+  getAllNotes,
+} from "@/services/NotesService";
 import { Note } from "@/types/note";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
-  const { language } = useLanguage();
+  const { language: lang } = useLanguage();
   const { notes, setNotes, loading } = useNotes();
   const [activeNotes, setActiveNotes] = useState<Note[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,26 +27,30 @@ const HomePage = () => {
   );
 
   useEffect(() => {
-    const filteredNotes: Note[] = notes.filter((note) => {
-      const matchKeyword = keyword
-        ? note.title.toLowerCase().includes(keyword.toLowerCase())
-        : true;
+    const currentNotes = getActiveNotes();
 
-      const isActive = !note.archived;
-      return isActive && matchKeyword;
-    });
+    if (keyword === "") {
+      setActiveNotes(currentNotes);
+    } else {
+      const filteredNotes: Note[] = getActiveNotes().filter((note) => {
+        const matchKeyword = keyword
+          ? note.title.toLowerCase().includes(keyword.toLowerCase())
+          : true;
+        return matchKeyword;
+      });
 
-    setActiveNotes(filteredNotes);
+      setActiveNotes(filteredNotes);
+    }
   }, [notes, keyword]);
 
   const onDeleteChangeHandler = (id: string) => {
     deleteNote(id);
-    setNotes(getNotes());
+    setNotes(getAllNotes());
   };
 
   const onArchiveChangeHandler = (id: string) => {
     archiveNote(id);
-    setNotes(getNotes());
+    setNotes(getAllNotes());
   };
 
   const onKeywordChangeHandler = (keyword: string) => {
@@ -51,24 +60,22 @@ const HomePage = () => {
 
   return (
     <div className="max-w-[80%] mx-auto grid grid-rows-[auto,1fr] gap-4 py-4">
-      <TitlePage title={getLanguage("page.home", language as LangOption)} />
+      <TitlePage title={getLanguage("page.home", lang as LangOption)} />
       <Actionbar
         keyword={keyword}
         onKeywordChange={onKeywordChangeHandler}
         isAddNote={true}
-        language={language as LangOption}
       />
       {loading ? (
-        <Loading language={language as LangOption} />
+        <Loading />
       ) : activeNotes.length > 0 ? (
         <NoteList
           initialData={activeNotes}
-          language={language as LangOption}
           onArchiveChange={onArchiveChangeHandler}
           onDeleteChange={onDeleteChangeHandler}
         />
       ) : (
-        <Empty language={language as LangOption} text="page.empty.note" />
+        <Empty text="page.empty.note" />
       )}
     </div>
   );

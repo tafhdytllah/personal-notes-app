@@ -1,18 +1,16 @@
 import Empty from "@/components/Empty";
 import NoteItem from "@/components/NoteItem";
-import { LangOption } from "@/constants";
 import { Note } from "@/types/note";
+import PropTypes from "prop-types";
 
 type NoteListProps = {
   initialData: Note[];
-  language: LangOption;
   onArchiveChange: (id: string) => void;
   onDeleteChange: (id: string) => void;
 };
 
 const NoteList = ({
   initialData,
-  language,
   onArchiveChange,
   onDeleteChange,
 }: NoteListProps) => {
@@ -32,10 +30,22 @@ const NoteList = ({
           </div>
         </div>
       ) : (
-        <Empty language={language} text="" />
+        <Empty text="" />
       )}
     </>
   );
+};
+
+NoteList.propTypes = {
+  initialData: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string,
+      body: PropTypes.string,
+    }),
+  ).isRequired,
+  onArchiveChange: PropTypes.func.isRequired,
+  onDeleteChange: PropTypes.func.isRequired,
 };
 
 export default NoteList;

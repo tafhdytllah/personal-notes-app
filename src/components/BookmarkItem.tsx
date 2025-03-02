@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 
 type BookMarkItemProps = {
@@ -29,6 +30,13 @@ const BookMarkItem = ({
       )}
     </button>
   );
+};
+
+BookMarkItem.propTypes = {
+  isBookmark: PropTypes.bool.isRequired,
+  onArchive: PropTypes.func.isRequired,
+  noteId: PropTypes.string.isRequired,
+  onBookmark: PropTypes.func.isRequired,
 };
 
 export default BookMarkItem;
