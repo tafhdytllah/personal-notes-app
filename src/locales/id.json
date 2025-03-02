@@ -6,8 +6,10 @@
   "page.create": "Halaman Membuat Note",
   "page.*.detail": "Halaman Detail Note",
   "page.loading": "Mohon tunggu...",
+  "page.search": "Cari catatan...",
   "page.empty": "Tidak ada catatan",
   "theme.dark": "Gelap",
   "theme.light": "Terang",
-  "theme.system": "Sistem"
+  "theme.system": "Sistem",
+  "button.create": "Membuat Catatan"
 }

@@ -1,4 +1,5 @@
 import Empty from "@/components/Empty";
+import Actionbar from "@/components/layout/Actionbar";
 import NoteList from "@/components/layout/NoteList";
 import Loading from "@/components/Loading";
 import { LangOption } from "@/constants";
@@ -6,27 +7,51 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import { Note } from "@/types/note";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
-  const { notes, loading } = useNotes();
   const { language } = useLanguage();
-  const [activeNote, setActiveNote] = useState<Note[]>([]);
+  const { notes, loading } = useNotes();
+  const [activeNotes, setActiveNotes] = useState<Note[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [keyword, setKeyword] = useState<string>(
+    searchParams.get("keyword") || "",
+  );
 
   useEffect(() => {
-    const filterActiveNotes = notes.filter((note) => !note.archived);
-    setActiveNote(filterActiveNotes);
-  }, [notes]);
+    const filteredNotes: Note[] = notes.filter((note) => {
+      const matchKeyword = keyword
+        ? note.title.toLowerCase().includes(keyword.toLowerCase())
+        : true;
+
+      const isActive = !note.archived;
+      return isActive && matchKeyword;
+    });
+
+    setActiveNotes(filteredNotes);
+  }, [notes, keyword]);
+
+  const onKeywordChangeHandler = (keyword: string) => {
+    setKeyword(keyword);
+    setSearchParams({ keyword });
+  };
 
   return (
-    <>
+    <div className="grid grid-rows-[auto,1fr] gap-4">
+      <Actionbar
+        keyword={keyword}
+        onKeywordChange={onKeywordChangeHandler}
+        isAddNote={true}
+        language={language as LangOption}
+      />
       {loading ? (
         <Loading language={language as LangOption} />
-      ) : activeNote.length > 0 ? (
-        <NoteList initialData={activeNote} language={language as LangOption} />
+      ) : activeNotes.length > 0 ? (
+        <NoteList initialData={activeNotes} language={language as LangOption} />
       ) : (
         <Empty language={language as LangOption} />
       )}
-    </>
+    </div>
   );
 };
 

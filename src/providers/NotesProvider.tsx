@@ -1,5 +1,5 @@
 import { NotesContext } from "@/context/NotesContext";
-import { fetchNotes } from "@/services/notesService";
+import { fetchNotes } from "@/services/NotesService";
 import { Note } from "@/types/note";
 import { useCallback, useEffect, useMemo, useState } from "react";
 

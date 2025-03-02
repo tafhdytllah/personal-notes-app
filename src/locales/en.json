@@ -6,8 +6,10 @@
   "page.create": "Add Note Page",
   "page.*.detail": "Detail Note Page",
   "page.loading": "Loading...",
+  "page.search": "Search note...",
   "page.empty": "Empty note",
   "theme.dark": "Dark",
   "theme.light": "Light",
-  "theme.system": "System"
+  "theme.system": "System",
+  "button.create": "Create Note"
 }
