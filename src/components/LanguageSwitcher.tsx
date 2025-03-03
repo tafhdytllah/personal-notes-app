@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LangOption } from "@/constants";
-import { Language } from "@/types/language";
+import { Language } from "@/types";
 import PropTypes from "prop-types";
 
 type LanguageSwitcherProps = {

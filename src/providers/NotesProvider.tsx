@@ -1,5 +1,5 @@
 import { NotesContext } from "@/context/NotesContext";
-import { getAllNotes } from "@/services/NotesService";
+import { NetworkData } from "@/lib/network-data";
 import { Note } from "@/types/note";
 import PropTypes from "prop-types";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -9,19 +9,16 @@ const NotesProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getNotes = async () => {
+    const fetchNotes = async () => {
       setLoading(true);
-      try {
-        const data = getAllNotes();
-        setNotes(data);
-      } catch (error) {
-        throw new Error(`Failed to fetch notes : ${error}`);
-      } finally {
-        setLoading(false);
+      const { error, data } = await NetworkData.getActiveNotes();
+      if (!error && data) {
+        setNotes(data.data);
       }
+      setLoading(false);
     };
 
-    getNotes();
+    fetchNotes();
   }, []);
 
   const setNotesCallback = useCallback((notes: Note[]) => setNotes(notes), []);

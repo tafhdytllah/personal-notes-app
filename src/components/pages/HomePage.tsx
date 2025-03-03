@@ -7,12 +7,7 @@ import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
-import {
-  archiveNote,
-  deleteNote,
-  getActiveNotes,
-  getAllNotes,
-} from "@/services/NotesService";
+import { archiveNote, deleteNote, getAllNotes } from "@/services/NotesService";
 import { Note } from "@/types/note";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -20,32 +15,21 @@ import { useSearchParams } from "react-router-dom";
 const HomePage = () => {
   const { language: lang } = useLanguage();
   const { notes, setNotes, loading } = useNotes();
-  const [activeNotes, setActiveNotes] = useState<Note[]>([]);
+  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string>(
     searchParams.get("keyword") || "",
   );
 
   useEffect(() => {
-    const currentNotes = getActiveNotes();
-
     if (keyword === "") {
-      setActiveNotes(currentNotes);
+      setFilteredNotes(notes);
     } else {
-      const currentNotes = getActiveNotes();
-
-      if (keyword === "") {
-        setActiveNotes(currentNotes);
-      } else {
-        const filteredNotes: Note[] = getActiveNotes().filter((note) => {
-          const matchKeyword = keyword
-            ? note.title.toLowerCase().includes(keyword.toLowerCase())
-            : true;
-          return matchKeyword;
-        });
-
-        setActiveNotes(filteredNotes);
-      }
+      setFilteredNotes(
+        notes.filter((note) =>
+          note.title.toLowerCase().includes(keyword.toLowerCase()),
+        ),
+      );
     }
   }, [notes, keyword]);
 
@@ -74,9 +58,9 @@ const HomePage = () => {
       />
       {loading ? (
         <Loading />
-      ) : activeNotes.length > 0 ? (
+      ) : filteredNotes.length > 0 ? (
         <NoteList
-          initialData={activeNotes}
+          initialData={filteredNotes}
           onArchiveChange={onArchiveChangeHandler}
           onDeleteChange={onDeleteChangeHandler}
         />

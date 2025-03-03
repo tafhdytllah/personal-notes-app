@@ -1,42 +1,6 @@
+import { BaseResponse, LoginResponse, NoteResponse, NotesResponse, UserResponse } from "@/types";
+
 const BASE_URL = 'https://notes-api.dicoding.dev/v1';
-
-type BaseResponse = {
-  status: string;
-  message: string;
-}
-
-type LoginResponse = BaseResponse & {
-  data: {
-    accessToken: string;
-  }
-}
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-}
-
-type UserResponse = BaseResponse & {
-  data: User;
-}
-
-type Note = {
-  id: string;
-  title: string;
-  body: string;
-  owner: string;
-  archived: boolean;
-  createdAt: boolean;
-}
-
-type NoteResponse = BaseResponse & {
-  data: Note;
-}
-
-type NotesResponse = BaseResponse & {
-  data: Note[];
-}
 
 const getAccessToken = (): string | null => localStorage.getItem("accessToken");
 

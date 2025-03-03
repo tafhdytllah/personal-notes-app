@@ -5,7 +5,7 @@ import { LangOption, ThemeEnum } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTheme } from "@/hooks/useTheme";
 import { fetchLanguages } from "@/lib/data";
-import { Language } from "@/types/language";
+import { Language } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 
 const Navbar = () => {
