@@ -1,12 +1,15 @@
 import { Switch } from "@/components/ui/switch";
-import { ThemeEnum } from "@/constants";
-import { useTheme } from "@/hooks/useTheme";
+import PropTypes from "prop-types";
 import { FaRegMoon, FaSun } from "react-icons/fa";
 
-const ThemeSwitcher = () => {
-  const { theme, setTheme } = useTheme();
-  const isDarkMode = theme === ThemeEnum.Dark;
-
+type ThemeSwitcherProps = {
+  isDarkMode: boolean;
+  themeOnChangeHandler: (checked: boolean) => void;
+};
+const ThemeSwitcher = ({
+  isDarkMode,
+  themeOnChangeHandler,
+}: ThemeSwitcherProps) => {
   return (
     <div className="flex items-center gap-x-2">
       {isDarkMode ? (
@@ -14,14 +17,14 @@ const ThemeSwitcher = () => {
       ) : (
         <FaSun className="h-5 w-5 text-foreground" />
       )}
-      <Switch
-        checked={isDarkMode}
-        onCheckedChange={(checked: boolean) =>
-          setTheme(checked ? ThemeEnum.Dark : ThemeEnum.Light)
-        }
-      />
+      <Switch checked={isDarkMode} onCheckedChange={themeOnChangeHandler} />
     </div>
   );
+};
+
+ThemeSwitcher.protoTypes = {
+  isDarkMode: PropTypes.bool.isRequired,
+  themeOnChangeHandler: PropTypes.func.isRequired,
 };
 
 export default ThemeSwitcher;

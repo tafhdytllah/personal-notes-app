@@ -1,8 +1,9 @@
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NavItem from "@/components/NavItem";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
-import { LangOption } from "@/constants";
+import { LangOption, ThemeEnum } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTheme } from "@/hooks/useTheme";
 import { fetchLanguages } from "@/lib/data";
 import { Language } from "@/types/language";
 import { useCallback, useEffect, useState } from "react";
@@ -10,10 +11,16 @@ import { useCallback, useEffect, useState } from "react";
 const Navbar = () => {
   const [languages, setLanguages] = useState<Language[]>([]);
   const { language, setLanguage } = useLanguage();
+  const { theme, setTheme } = useTheme();
+  const isDarkMode = theme === ThemeEnum.Dark;
 
   const currentLang: Language | undefined = languages.find(
     (lang) => lang?.code === language,
   );
+
+  const themeOnChangeHandler = (checked: boolean) => {
+    setTheme(checked ? ThemeEnum.Dark : ThemeEnum.Light);
+  };
 
   const handleLanguageChange = useCallback(
     (lang: LangOption) => setLanguage(lang),
@@ -32,7 +39,10 @@ const Navbar = () => {
           <NavItem route="notes-archives" title="navbar.archive" />
         </div>
         <div className="flex items-center gap-x-6">
-          <ThemeSwitcher />
+          <ThemeSwitcher
+            isDarkMode={isDarkMode}
+            themeOnChangeHandler={themeOnChangeHandler}
+          />
           <LanguageSwitcher
             languages={languages}
             currentLang={currentLang}
