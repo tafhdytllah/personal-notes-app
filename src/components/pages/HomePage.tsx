@@ -32,14 +32,20 @@ const HomePage = () => {
     if (keyword === "") {
       setActiveNotes(currentNotes);
     } else {
-      const filteredNotes: Note[] = getActiveNotes().filter((note) => {
-        const matchKeyword = keyword
-          ? note.title.toLowerCase().includes(keyword.toLowerCase())
-          : true;
-        return matchKeyword;
-      });
+      const currentNotes = getActiveNotes();
 
-      setActiveNotes(filteredNotes);
+      if (keyword === "") {
+        setActiveNotes(currentNotes);
+      } else {
+        const filteredNotes: Note[] = getActiveNotes().filter((note) => {
+          const matchKeyword = keyword
+            ? note.title.toLowerCase().includes(keyword.toLowerCase())
+            : true;
+          return matchKeyword;
+        });
+
+        setActiveNotes(filteredNotes);
+      }
     }
   }, [notes, keyword]);
 
