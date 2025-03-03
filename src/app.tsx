@@ -1,41 +1,27 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/lib/use-theme";
-import { Moon, Sun } from "lucide-react";
+import MainLayout from "@/components/layout/MainLayout";
+import ArchivePage from "@/components/pages/ArchivePage";
+import CreatePage from "@/components/pages/CreatePage";
+import DetailPage from "@/components/pages/DetailPage";
+import EditPage from "@/components/pages/EditPage";
+import HomePage from "@/components/pages/HomePage";
+import NotFoundPage from "@/components/pages/NotFoundPage";
+import { ROUTES } from "@/constants/route";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 const App = () => {
-  const { setTheme } = useTheme();
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-6">
-      <h1 className="text-3xl font-bold">Personal Notes App</h1>
-      <div className="mt-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
-              System
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path={ROUTES["notes"]} element={<HomePage />} />
+          <Route path={ROUTES["notes-create"]} element={<CreatePage />} />
+          <Route path={ROUTES["notes-detail"]} element={<DetailPage />} />
+          <Route path={ROUTES["notes-edit"]} element={<EditPage />} />
+          <Route path={ROUTES["notes-archives"]} element={<ArchivePage />} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
   );
 };
 

@@ -1,0 +1,1 @@
+export type FormType = "NEW" | "EDIT" | "VIEW"
