@@ -4,43 +4,59 @@ import NoteList from "@/components/layout/NoteList";
 import Loading from "@/components/Loading";
 import TitlePage from "@/components/TitlePage";
 import { LangOption } from "@/constants";
+import { ROUTES } from "@/constants/route";
+import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
-import { archiveNote, deleteNote, getAllNotes } from "@/services/NotesService";
 import { Note } from "@/types/note";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
   const { language: lang } = useLanguage();
-  const { notes, setNotes, loading } = useNotes();
+  const { notes, loading: loadingNotes } = useNotes();
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string>(
     searchParams.get("keyword") || "",
   );
+  const { user, loading: loadingAuth } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (keyword === "") {
-      setFilteredNotes(notes);
-    } else {
+    if (notes.length > 0) {
       setFilteredNotes(
-        notes.filter((note) =>
-          note.title.toLowerCase().includes(keyword.toLowerCase()),
-        ),
+        keyword
+          ? notes.filter((note) =>
+              note.title.toLowerCase().includes(keyword.toLowerCase()),
+            )
+          : notes,
       );
+    } else {
+      setFilteredNotes([]);
     }
   }, [notes, keyword]);
 
+  useEffect(() => {
+    if (!loadingAuth && !user) {
+      navigate(ROUTES["login"]);
+    }
+  }, [user, loadingAuth, navigate]);
+
+  if (loadingAuth || loadingNotes) return <Loading />;
+  if (!user) return null;
+
   const onDeleteChangeHandler = (id: string) => {
-    deleteNote(id);
-    setNotes(getAllNotes());
+    console.log(id);
+    // deleteNote(id);
+    // setNotes(getAllNotes());
   };
 
   const onArchiveChangeHandler = (id: string) => {
-    archiveNote(id);
-    setNotes(getAllNotes());
+    console.log(id);
+    // archiveNote(id);
+    // setNotes(getAllNotes());
   };
 
   const onKeywordChangeHandler = (keyword: string) => {
@@ -56,9 +72,7 @@ const HomePage = () => {
         onKeywordChange={onKeywordChangeHandler}
         isAddNote={true}
       />
-      {loading ? (
-        <Loading />
-      ) : filteredNotes.length > 0 ? (
+      {filteredNotes.length > 0 ? (
         <NoteList
           initialData={filteredNotes}
           onArchiveChange={onArchiveChangeHandler}

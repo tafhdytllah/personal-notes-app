@@ -1,4 +1,4 @@
-import { BaseResponse, LoginResponse, NoteResponse, NotesResponse, UserResponse } from "@/types";
+import { BaseResponse, LoginResponse, Note, NoteResponse, NotesResponse, User, UserResponse } from "@/types";
 
 const BASE_URL = 'https://notes-api.dicoding.dev/v1';
 
@@ -24,7 +24,7 @@ const login = async ({
 }: {
   email: string;
   password: string
-}): Promise<{ error: boolean; data: LoginResponse | null }> => {
+}): Promise<{ error: boolean; data: { accessToken: string } | null }> => {
   try {
     const response = await fetch(`${BASE_URL}/login`, {
       method: "POST",
@@ -34,13 +34,11 @@ const login = async ({
       body: JSON.stringify({ email, password }),
     });
 
-    const responseJson = await response.json();
-
-    if (responseJson.status !== "success") {
-      alert(responseJson.message);
-      return { error: true, data: null };
+    if (!response.ok) {
+      throw new Error("Login failed");
     }
 
+    const responseJson: LoginResponse = await response.json();
     return { error: false, data: responseJson.data };
   } catch (error) {
     console.error("error:", error);
@@ -66,7 +64,7 @@ const register = async ({
       body: JSON.stringify({ name, email, password }),
     });
 
-    const responseJson = await response.json();
+    const responseJson: BaseResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       alert(responseJson.message);
@@ -80,10 +78,10 @@ const register = async ({
   }
 }
 
-const getUserLogged = async (): Promise<{ error: boolean; data: UserResponse | null }> => {
+const getUserLogged = async (): Promise<{ error: boolean; data: User | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/users/me`);
-    const responseJson = await response.json();
+    const responseJson: UserResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
@@ -102,7 +100,7 @@ const addNote = async ({
 }: {
   title: string;
   body: string
-}): Promise<{ error: boolean; data: NoteResponse | null }> => {
+}): Promise<{ error: boolean; data: Note | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes`, {
       method: 'POST',
@@ -112,7 +110,7 @@ const addNote = async ({
       body: JSON.stringify({ title, body }),
     });
 
-    const responseJson = await response.json();
+    const responseJson: NoteResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
@@ -125,10 +123,10 @@ const addNote = async ({
   }
 }
 
-const getActiveNotes = async (): Promise<{ error: boolean; data: NotesResponse | null }> => {
+const getActiveNotes = async (): Promise<{ error: boolean; data: Note[] | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes`);
-    const responseJson = await response.json();
+    const responseJson: NotesResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
@@ -141,10 +139,10 @@ const getActiveNotes = async (): Promise<{ error: boolean; data: NotesResponse |
   }
 }
 
-const getArchivedNotes = async (): Promise<{ error: boolean; data: NotesResponse | null }> => {
+const getArchivedNotes = async (): Promise<{ error: boolean; data: Note[] | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes/archived`);
-    const responseJson = await response.json();
+    const responseJson: NotesResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
@@ -157,10 +155,10 @@ const getArchivedNotes = async (): Promise<{ error: boolean; data: NotesResponse
   }
 }
 
-const getNote = async (id: string): Promise<{ error: boolean; data: NoteResponse | null }> => {
+const getNote = async (id: string): Promise<{ error: boolean; data: Note | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes/${id}`);
-    const responseJson = await response.json();
+    const responseJson: NoteResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
@@ -187,57 +185,59 @@ const getNote = async (id: string): Promise<{ error: boolean; data: NoteResponse
 //   return { error: false, data: responseJson.data };
 // }
 
-const archiveNote = async (id: string): Promise<{ error: boolean; data: BaseResponse | null }> => {
+const archiveNote = async (id: string): Promise<{ error: boolean; data: string | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes/${id}/archive`, {
       method: 'POST',
     });
 
-    const responseJson = await response.json();
+    const responseJson: BaseResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
     }
 
-    return { error: false, data: responseJson.data };
+    console.log(responseJson);
+    return { error: false, data: "ok" };
   } catch (error) {
     console.error('error:', error);
     return { error: true, data: null };
   }
 }
 
-const unarchiveNote = async (id: string): Promise<{ error: boolean; data: BaseResponse | null }> => {
+const unarchiveNote = async (id: string): Promise<{ error: boolean; data: string | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes/${id}/unarchive`, {
       method: 'POST',
     });
 
-    const responseJson = await response.json();
+    const responseJson: BaseResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
     }
-
-    return { error: false, data: responseJson.data };
+    console.log(responseJson);
+    return { error: false, data: "ok" };
   } catch (error) {
     console.error('error:', error);
     return { error: true, data: null };
   }
 }
 
-const deleteNote = async (id: string): Promise<{ error: boolean; data: BaseResponse | null }> => {
+const deleteNote = async (id: string): Promise<{ error: boolean; data: string | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes/${id}`, {
       method: 'DELETE',
     });
 
-    const responseJson = await response.json();
+    const responseJson: BaseResponse = await response.json();
 
     if (responseJson.status !== 'success') {
       return { error: true, data: null };
     }
 
-    return { error: false, data: responseJson.data };
+    console.log(responseJson);
+    return { error: false, data: "ok" };
   } catch (error) {
     console.error('error:', error);
     return { error: true, data: null };
@@ -247,15 +247,15 @@ const deleteNote = async (id: string): Promise<{ error: boolean; data: BaseRespo
 export const NetworkData = {
   addNote,
   archiveNote,
-  deleteNote,
+  unarchiveNote,
   getAccessToken,
   getActiveNotes,
   getArchivedNotes,
   getNote,
+  deleteNote,
   getUserLogged,
   login,
   putAccessToken,
   register,
-  unarchiveNote
 };
 

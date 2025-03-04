@@ -2,21 +2,30 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NavItem from "@/components/NavItem";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { LangOption, ThemeEnum } from "@/constants";
+import { ROUTES } from "@/constants/route";
+import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTheme } from "@/hooks/useTheme";
 import { fetchLanguages } from "@/lib/data";
 import { Language } from "@/types";
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const { logout } = useAuth();
   const [languages, setLanguages] = useState<Language[]>([]);
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === ThemeEnum.Dark;
+  const navigate = useNavigate();
 
   const currentLang: Language | undefined = languages.find(
     (lang) => lang?.code === language,
   );
+
+  useEffect(() => {
+    fetchLanguages().then((data) => setLanguages(data));
+  }, []);
 
   const themeOnChangeHandler = (checked: boolean) => {
     setTheme(checked ? ThemeEnum.Dark : ThemeEnum.Light);
@@ -27,9 +36,10 @@ const Navbar = () => {
     [setLanguage],
   );
 
-  useEffect(() => {
-    fetchLanguages().then((data) => setLanguages(data));
-  }, []);
+  const handleLogout = async () => {
+    logout();
+    navigate(ROUTES["login"]);
+  };
 
   return (
     <nav className="bg-background shadow-md">
@@ -48,6 +58,9 @@ const Navbar = () => {
             currentLang={currentLang}
             onLanguageChange={handleLanguageChange}
           />
+          <button onClick={handleLogout} className="text-sm text-red-500">
+            Logout
+          </button>
         </div>
       </div>
     </nav>

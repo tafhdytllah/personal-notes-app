@@ -1,4 +1,6 @@
 export const ROUTES = {
+  "login": "/login",
+  "register": "/register",
   "notes": "/",
   "notes-create": "/notes/create",
   "notes-detail": "/notes/:id/detail",

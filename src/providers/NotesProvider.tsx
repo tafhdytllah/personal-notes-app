@@ -13,7 +13,7 @@ const NotesProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(true);
       const { error, data } = await NetworkData.getActiveNotes();
       if (!error && data) {
-        setNotes(data.data);
+        setNotes(data);
       }
       setLoading(false);
     };

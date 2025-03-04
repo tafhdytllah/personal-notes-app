@@ -3,7 +3,6 @@ import TitlePage from "@/components/TitlePage";
 import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import getLanguage from "@/lib/language";
-import { getNoteById } from "@/services/NotesService";
 import { useParams } from "react-router-dom";
 
 const EditPage = () => {

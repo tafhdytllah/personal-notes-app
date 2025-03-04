@@ -4,5 +4,5 @@ export type Note = {
   body: string;
   owner: string;
   archived: boolean;
-  createdAt: boolean;
+  createdAt: string;
 }

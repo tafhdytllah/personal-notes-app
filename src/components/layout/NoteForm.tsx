@@ -15,7 +15,6 @@ import { useLanguage } from "@/hooks/useLanguage";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
-import { createNote, editNote } from "@/services/NotesService";
 import { Note } from "@/types/note";
 import {
   NoteFormValidator,
@@ -56,13 +55,13 @@ const NoteForm = ({ type, initialData }: NoteFormProps) => {
       id: "",
       title: values.title ?? "",
       body: values.body ?? "",
+      owner: "",
       createdAt: "",
       archived: false,
     };
 
     try {
       const updatedNotes = createNote(mappedData);
-      console.log("updatedNotes : ", updatedNotes);
       setNotes(updatedNotes);
       navigate(redirectUrl);
     } catch (error) {
@@ -78,6 +77,7 @@ const NoteForm = ({ type, initialData }: NoteFormProps) => {
       id: initialData.id ?? "",
       title: values.title ?? "",
       body: values.body ?? "",
+      owner: "",
       createdAt: "",
       archived: false,
     };

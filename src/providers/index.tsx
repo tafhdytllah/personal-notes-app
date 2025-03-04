@@ -1,4 +1,5 @@
 import { ThemeEnum } from "@/constants";
+import AuthProvider from "@/providers/AuthProvider";
 import LanguageProvider from "@/providers/LanguageProvider";
 import NotesProvider from "@/providers/NotesProvider";
 import ThemeProvider from "@/providers/ThemeProvider";
@@ -11,9 +12,11 @@ type ProvidersProps = {
 const Providers = ({ children }: ProvidersProps) => {
   return (
     <ThemeProvider defaultTheme={ThemeEnum.Dark}>
-      <NotesProvider>
-        <LanguageProvider>{children}</LanguageProvider>
-      </NotesProvider>
+      <AuthProvider>
+        <NotesProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </NotesProvider>
+      </AuthProvider>
     </ThemeProvider>
   );
 };
