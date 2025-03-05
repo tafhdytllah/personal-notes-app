@@ -17,6 +17,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const ArchivePage = () => {
   const { language: lang } = useLanguage();
   const { notes, setNotes, loading: loadingNotes } = useNotes();
+  const [loading, setLoading] = useState<boolean>(false);
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string>(
@@ -47,16 +48,18 @@ const ArchivePage = () => {
 
   useEffect(() => {
     const fetchArchivedNotes = async () => {
+      setLoading(true);
       const { error, data } = await NetworkData.getArchivedNotes();
       if (!error && data) {
         setNotes(data);
       }
+      setLoading(false);
     };
 
     fetchArchivedNotes();
   }, [setNotes]);
 
-  if (loadingAuth || loadingNotes) return <Loading />;
+  if (loadingAuth || loadingNotes || loading) return <Loading />;
   if (!user) return null;
 
   const onDeleteChangeHandler = async (id: string) => {

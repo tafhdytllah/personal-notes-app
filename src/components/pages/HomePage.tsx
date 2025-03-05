@@ -18,6 +18,7 @@ const HomePage = () => {
   const { language: lang } = useLanguage();
   const { notes, loading: loadingNotes, setNotes } = useNotes();
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string>(
     searchParams.get("keyword") || "",
@@ -47,16 +48,18 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchActivedNotes = async () => {
+      setLoading(true);
       const { error, data } = await NetworkData.getActiveNotes();
       if (!error && data) {
         setNotes(data);
       }
+      setLoading(false);
     };
 
     fetchActivedNotes();
   }, [setNotes]);
 
-  if (loadingAuth || loadingNotes) return <Loading />;
+  if (loadingAuth || loadingNotes || loading) return <Loading />;
   if (!user) return null;
 
   const onDeleteChangeHandler = async (id: string) => {
