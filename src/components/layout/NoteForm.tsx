@@ -15,7 +15,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
-import { Note } from "@/types/note";
+import { NetworkData } from "@/lib/network-data";
 import {
   NoteFormValidator,
   ValidatedNoteFormData,
@@ -32,7 +32,7 @@ type NoteFormProps = {
 };
 const NoteForm = ({ type, initialData }: NoteFormProps) => {
   const { language: lang } = useLanguage();
-  const { setNotes } = useNotes();
+  const { notes, setNotes } = useNotes();
   const navigate = useNavigateTo();
 
   const editable = type === "NEW" || type === "EDIT";
@@ -50,42 +50,23 @@ const NoteForm = ({ type, initialData }: NoteFormProps) => {
 
   const isDataChanged = form.formState.isDirty;
 
-  const saveAsNew = (values: z.infer<typeof NoteFormValidator>) => {
-    const mappedData: Note = {
-      id: "",
+  const saveAsNew = async (values: z.infer<typeof NoteFormValidator>) => {
+    const mappedData: { title: string; body: string } = {
       title: values.title ?? "",
       body: values.body ?? "",
-      owner: "",
-      createdAt: "",
-      archived: false,
     };
 
     try {
-      const updatedNotes = createNote(mappedData);
-      setNotes(updatedNotes);
-      navigate(redirectUrl);
-    } catch (error) {
-      console.error(error);
-      navigate(redirectUrl);
-    }
-  };
+      const response = await NetworkData.addNote(mappedData);
+      if (response.error) {
+        console.error("Gagal menambahkan catatan");
+        return;
+      }
 
-  const saveAsEdit = (values: z.infer<typeof NoteFormValidator>) => {
-    if (!initialData?.id) return;
-
-    const mappedData: Note = {
-      id: initialData.id ?? "",
-      title: values.title ?? "",
-      body: values.body ?? "",
-      owner: "",
-      createdAt: "",
-      archived: false,
-    };
-
-    try {
-      const updatedNotes = editNote(mappedData);
-      setNotes(updatedNotes);
-      navigate(redirectUrl);
+      if (response.data) {
+        setNotes([...notes, response.data]);
+        navigate(redirectUrl);
+      }
     } catch (error) {
       console.error(error);
       navigate(redirectUrl);
@@ -96,7 +77,7 @@ const NoteForm = ({ type, initialData }: NoteFormProps) => {
     if (type === "NEW") {
       saveAsNew(values);
     } else if (type === "EDIT") {
-      saveAsEdit(values);
+      // saveAsEdit(values);
     }
   };
 

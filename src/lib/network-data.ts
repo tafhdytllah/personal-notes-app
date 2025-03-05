@@ -99,7 +99,7 @@ const addNote = async ({
   body
 }: {
   title: string;
-  body: string
+  body: string;
 }): Promise<{ error: boolean; data: Note | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes`, {
