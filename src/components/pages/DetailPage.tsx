@@ -26,7 +26,6 @@ const DetailPage = () => {
           return;
         }
         setNote(fetchedNote.data);
-        setLoading(false);
       }
     };
 
@@ -34,7 +33,10 @@ const DetailPage = () => {
   }, [id]);
 
   if (loading) {
-    return <Loading />;
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    return <Loading isLoading={loading} />;
   }
 
   if (!note) {

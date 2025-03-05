@@ -171,20 +171,6 @@ const getNote = async (id: string): Promise<{ error: boolean; data: Note | null 
   }
 }
 
-// async function archiveNote(id) {
-//   const response = await fetchWithToken(`${BASE_URL}/notes/${id}/archive`, {
-//     method: 'POST',
-//   });
-
-//   const responseJson = await response.json();
-
-//   if (responseJson.status !== 'success') {
-//     return { error: true, data: null };
-//   }
-
-//   return { error: false, data: responseJson.data };
-// }
-
 const archiveNote = async (id: string): Promise<{ error: boolean; data: string | null }> => {
   try {
     const response = await fetchWithToken(`${BASE_URL}/notes/${id}/archive`, {

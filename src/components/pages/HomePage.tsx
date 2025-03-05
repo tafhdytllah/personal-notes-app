@@ -53,13 +53,17 @@ const HomePage = () => {
       if (!error && data) {
         setNotes(data);
       }
-      setLoading(false);
     };
 
     fetchActivedNotes();
   }, [setNotes]);
 
-  if (loadingAuth || loadingNotes || loading) return <Loading />;
+  if (loadingAuth || loadingNotes || loading) {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    return <Loading isLoading={loading} />;
+  }
   if (!user) return null;
 
   const onDeleteChangeHandler = async (id: string) => {

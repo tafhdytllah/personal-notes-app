@@ -1,13 +1,22 @@
+import { ProgressBar } from "@/components/ProgressBar";
 import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import getLanguage from "@/lib/language";
 
-const Loading = () => {
+type Props = {
+  isLoading: boolean;
+};
+const Loading = ({ isLoading }: Props) => {
   const { language: lang } = useLanguage();
   return (
-    <div className="flex justify-center items-start h-screen text-lg font-semibold size mt-8">
-      {getLanguage("page.loading", lang as LangOption)}
-    </div>
+    <>
+      <ProgressBar isLoading={isLoading} />
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex justify-center items-center h-screen text-lg font-semibold">
+          {getLanguage("page.loading", lang as LangOption)}
+        </div>
+      </div>
+    </>
   );
 };
 
