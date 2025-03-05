@@ -9,13 +9,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
+import { NetworkData } from "@/lib/network-data";
 import { Note } from "@/types/note";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
   const { language: lang } = useLanguage();
-  const { notes, loading: loadingNotes } = useNotes();
+  const { notes, loading: loadingNotes, setNotes } = useNotes();
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string>(
@@ -44,19 +45,40 @@ const HomePage = () => {
     }
   }, [user, loadingAuth, navigate]);
 
+  useEffect(() => {
+    const fetchActivedNotes = async () => {
+      const { error, data } = await NetworkData.getActiveNotes();
+      if (!error && data) {
+        setNotes(data);
+      }
+    };
+
+    fetchActivedNotes();
+  }, [setNotes]);
+
   if (loadingAuth || loadingNotes) return <Loading />;
   if (!user) return null;
 
-  const onDeleteChangeHandler = (id: string) => {
-    console.log(id);
-    // deleteNote(id);
-    // setNotes(getAllNotes());
+  const onDeleteChangeHandler = async (id: string) => {
+    const result = await NetworkData.deleteNote(id);
+    if (result.error) {
+      console.error("Gagal hapus catatan");
+      return;
+    }
+
+    const notesWithoutDeleted = notes.filter((note) => note.id !== id);
+    setNotes(notesWithoutDeleted);
   };
 
-  const onArchiveChangeHandler = (id: string) => {
-    console.log(id);
-    // archiveNote(id);
-    // setNotes(getAllNotes());
+  const onArchiveChangeHandler = async (id: string) => {
+    const result = await NetworkData.archiveNote(id);
+    if (result.error) {
+      console.error("Gagal mengarsipkan catatan");
+      return;
+    }
+
+    const activeNotes = notes.filter((notes) => notes.id !== id);
+    setNotes(activeNotes);
   };
 
   const onKeywordChangeHandler = (keyword: string) => {

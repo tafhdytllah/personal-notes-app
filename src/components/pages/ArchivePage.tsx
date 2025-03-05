@@ -10,18 +10,34 @@ import { useLanguage } from "@/hooks/useLanguage";
 import { useNotes } from "@/hooks/useNotes";
 import getLanguage from "@/lib/language";
 import { NetworkData } from "@/lib/network-data";
-import { useEffect, useMemo, useState } from "react";
+import { Note } from "@/types";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ArchivePage = () => {
   const { language: lang } = useLanguage();
   const { notes, setNotes, loading: loadingNotes } = useNotes();
+  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [keyword, setKeyword] = useState<string>(
     searchParams.get("keyword") || "",
   );
   const { user, loading: loadingAuth } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (notes.length > 0) {
+      setFilteredNotes(
+        keyword
+          ? notes.filter((note) =>
+              note.title.toLowerCase().includes(keyword.toLowerCase()),
+            )
+          : notes,
+      );
+    } else {
+      setFilteredNotes([]);
+    }
+  }, [notes, keyword]);
 
   useEffect(() => {
     if (!loadingAuth && !user) {
@@ -40,31 +56,30 @@ const ArchivePage = () => {
     fetchArchivedNotes();
   }, [setNotes]);
 
-  const archivedNotes = useMemo(
-    () =>
-      notes.filter(
-        (note) =>
-          note.archived &&
-          note.title.toLowerCase().includes(keyword.toLowerCase()),
-      ),
-    [notes, keyword],
-  );
-
   if (loadingAuth || loadingNotes) return <Loading />;
   if (!user) return null;
 
-  const onDeleteChangeHandler = (id: string) => {
-    console.log(id);
-    // deleteNote(id);
-    // setNotes(getAllNotes());
+  const onDeleteChangeHandler = async (id: string) => {
+    const result = await NetworkData.deleteNote(id);
+    if (result.error) {
+      console.error("Gagal hapus catatan");
+      return;
+    }
+
+    const notesWithoutDeleted = notes.filter((note) => note.id !== id);
+    setNotes(notesWithoutDeleted);
   };
 
-  const onArchiveChangeHandler = (id: string) => {
-    console.log(id);
-    // unarchiveNote(id);
-    // setNotes(getAllNotes());
-  };
+  const onArchiveChangeHandler = async (id: string) => {
+    const result = await NetworkData.unarchiveNote(id);
+    if (result.error) {
+      console.error("Gagal mengembalikan arsip catatan");
+      return;
+    }
 
+    const archiveNotes = notes.filter((notes) => notes.id !== id);
+    setNotes(archiveNotes);
+  };
   const onKeywordChangeHandler = (keyword: string) => {
     setKeyword(keyword);
     setSearchParams({ keyword });
@@ -78,9 +93,9 @@ const ArchivePage = () => {
         onKeywordChange={onKeywordChangeHandler}
         isAddNote={false}
       />
-      {archivedNotes.length > 0 ? (
+      {filteredNotes.length > 0 ? (
         <NoteList
-          initialData={archivedNotes}
+          initialData={filteredNotes}
           onArchiveChange={onArchiveChangeHandler}
           onDeleteChange={onDeleteChangeHandler}
         />
