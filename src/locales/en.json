@@ -1,6 +1,7 @@
 {
   "navbar.home": "Home",
   "navbar.archive": "Archives",
+  "navbar.logout": "Logout",
   "page.home": "Home Page",
   "page.archive": "Archives Note Page",
   "page.create": "Add Note Page",

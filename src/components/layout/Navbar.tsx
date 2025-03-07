@@ -1,4 +1,5 @@
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import LogoutItem from "@/components/LogoutItem";
 import NavItem from "@/components/NavItem";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import { LangOption, ThemeEnum } from "@/constants";
@@ -12,7 +13,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const [languages, setLanguages] = useState<Language[]>([]);
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -58,9 +59,7 @@ const Navbar = () => {
             currentLang={currentLang}
             onLanguageChange={handleLanguageChange}
           />
-          <button onClick={handleLogout} className="text-sm text-red-500">
-            Logout
-          </button>
+          {user && <LogoutItem onLogout={handleLogout} name={user?.name} />}
         </div>
       </div>
     </nav>

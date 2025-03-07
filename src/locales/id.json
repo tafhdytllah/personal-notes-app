@@ -1,6 +1,7 @@
 {
   "navbar.home": "Beranda",
   "navbar.archive": "Arsip",
+  "navbar.logout": "Keluar",
   "page.home": "Halaman Beranda",
   "page.archive": "Halaman Archives Note",
   "page.create": "Halaman Membuat Note",
