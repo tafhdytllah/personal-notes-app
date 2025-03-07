@@ -1,4 +1,5 @@
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Loading from "@/components/Loading";
 import LogoutItem from "@/components/LogoutItem";
 import NavItem from "@/components/NavItem";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
@@ -19,6 +20,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
   const isDarkMode = theme === ThemeEnum.Dark;
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const currentLang: Language | undefined = languages.find(
     (lang) => lang?.code === language,
@@ -38,31 +40,38 @@ const Navbar = () => {
   );
 
   const handleLogout = async () => {
-    logout();
-    navigate(ROUTES["login"]);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      logout();
+      navigate(ROUTES["login"]);
+    }, 500);
   };
 
   return (
-    <nav className="bg-background shadow-md">
-      <div className="container max-w-[80%] mx-auto flex justify-between items-center py-4">
-        <div className="flex gap-x-6">
-          <NavItem route="notes" title="navbar.home" />
-          <NavItem route="notes-archives" title="navbar.archive" />
+    <>
+      <nav className="bg-background shadow-md">
+        <div className="container max-w-[80%] mx-auto flex justify-between items-center py-4">
+          <div className="flex gap-x-6">
+            <NavItem route="notes" title="navbar.home" />
+            <NavItem route="notes-archives" title="navbar.archive" />
+          </div>
+          <div className="flex items-center gap-x-6">
+            <ThemeSwitcher
+              isDarkMode={isDarkMode}
+              themeOnChangeHandler={themeOnChangeHandler}
+            />
+            <LanguageSwitcher
+              languages={languages}
+              currentLang={currentLang}
+              onLanguageChange={handleLanguageChange}
+            />
+            {user && <LogoutItem onLogout={handleLogout} name={user?.name} />}
+          </div>
         </div>
-        <div className="flex items-center gap-x-6">
-          <ThemeSwitcher
-            isDarkMode={isDarkMode}
-            themeOnChangeHandler={themeOnChangeHandler}
-          />
-          <LanguageSwitcher
-            languages={languages}
-            currentLang={currentLang}
-            onLanguageChange={handleLanguageChange}
-          />
-          {user && <LogoutItem onLogout={handleLogout} name={user?.name} />}
-        </div>
-      </div>
-    </nav>
+      </nav>
+      {loading && <Loading isLoading={loading} />}
+    </>
   );
 };
 
