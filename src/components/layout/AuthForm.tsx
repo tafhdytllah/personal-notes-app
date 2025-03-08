@@ -22,6 +22,7 @@ import {
   ValidatedAuthFormData,
 } from "@/validator/authValidator";
 import { zodResolver } from "@hookform/resolvers/zod";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 
 type AuthFormProps = {
@@ -203,6 +204,10 @@ const AuthForm = ({ formAuthType }: AuthFormProps) => {
       </div>
     </Form>
   );
+};
+
+AuthForm.propTypes = {
+  formAuthType: PropTypes.oneOf(["LOGIN", "REGISTER"]).isRequired,
 };
 
 export default AuthForm;

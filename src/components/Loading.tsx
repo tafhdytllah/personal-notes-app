@@ -2,6 +2,7 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import getLanguage from "@/lib/language";
+import PropTypes from "prop-types";
 
 type Props = {
   isLoading: boolean;
@@ -18,6 +19,10 @@ const Loading = ({ isLoading }: Props) => {
       </div>
     </>
   );
+};
+
+Loading.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default Loading;

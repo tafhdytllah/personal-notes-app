@@ -8,6 +8,7 @@ import {
 import { LangOption } from "@/constants";
 import { useLanguage } from "@/hooks/useLanguage";
 import getLanguage from "@/lib/language";
+import PropTypes from "prop-types";
 import { FaChevronDown, FaRegUser } from "react-icons/fa";
 
 type LogoutItemProps = {
@@ -42,6 +43,11 @@ const LogoutItem = ({ onLogout, name }: LogoutItemProps) => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+};
+
+LogoutItem.propTypes = {
+  onLogout: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 export default LogoutItem;

@@ -3,6 +3,7 @@
 import * as React from "react";
 
 import { Progress } from "@/components/ui/progress";
+import PropTypes from "prop-types";
 
 type Props = {
   isLoading: boolean;
@@ -27,3 +28,7 @@ export function ProgressBar({ isLoading }: Props) {
     <Progress value={progress} className="w-[100%] h-0.5 transition-all" />
   );
 }
+
+ProgressBar.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+};

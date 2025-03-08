@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
   const redirectUrl = ROUTES["login"];
   const { user, loading } = useAuth();
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading isLoading={loading} />;
   return user ? <Outlet /> : <Navigate to={redirectUrl} replace />;
 };
 

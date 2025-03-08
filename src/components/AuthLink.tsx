@@ -4,6 +4,7 @@ import { ROUTES } from "@/constants/route";
 import { useLanguage } from "@/hooks/useLanguage";
 import useNavigateTo from "@/hooks/useNavigateTo";
 import getLanguage from "@/lib/language";
+import PropTypes from "prop-types";
 
 type AuthLinkProps = {
   type: FormAuthType;
@@ -30,6 +31,10 @@ const AuthLink = ({ type }: AuthLinkProps) => {
       </Button>
     </p>
   );
+};
+
+AuthLink.propTypes = {
+  type: PropTypes.oneOf(["LOGIN", "REGISTER"]).isRequired,
 };
 
 export default AuthLink;
