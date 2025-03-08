@@ -1,11 +1,12 @@
 import { User } from '@/types';
+import { ValidatedAuthFormData } from '@/validator/authValidator';
 import { createContext } from 'react';
 
 export type AuthProviderState = {
   user: User | null;
   loading: boolean,
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (name: string, email: string, password: string) => Promise<boolean>;
+  login: (loginRequest: ValidatedAuthFormData) => Promise<boolean>;
+  register: (registerRequest: ValidatedAuthFormData) => Promise<boolean>;
   logout: () => void;
 }
 

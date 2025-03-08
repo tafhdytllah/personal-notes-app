@@ -1,6 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
 import { NetworkData } from "@/lib/network-data";
 import { User } from "@/types";
+import { ValidatedAuthFormData } from "@/validator/authValidator";
 import PropTypes from "prop-types";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 
@@ -41,7 +42,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     fetchUser();
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (loginRequest: ValidatedAuthFormData) => {
+    const { email, password } = loginRequest;
     const { error, data } = await NetworkData.login({
       email,
       password,
@@ -65,7 +67,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   const register = useCallback(
-    async (name: string, email: string, password: string) => {
+    async (registerRequest: ValidatedAuthFormData) => {
+      const { name, email, password } = registerRequest;
       const { error } = await NetworkData.register({
         name,
         email,

@@ -47,11 +47,11 @@ const login = async ({
 }
 
 const register = async ({
-  name,
+  name = "unknown",
   email,
   password
 }: {
-  name: string;
+  name?: string;
   email: string;
   password: string
 }): Promise<{ error: boolean }> => {
